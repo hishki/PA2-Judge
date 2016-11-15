@@ -4,6 +4,7 @@ from base.client import ClientManager
 from base.test import TestExecuter
 from base.logger import logger
 from base.config import config
+import subprocess
 
 import atexit, sys, argparse, os, signal, time, importlib
 import tests
@@ -18,7 +19,9 @@ def main():
     #     data = json.load(data_file)
 
     cwd = config['cf_path']
-
+    git_pull_path = os.path.dirname(os.path.dirname(os.path.dirname(cwd)))
+    output = subprocess.check_output(["git", "pull"], cwd=git_pull_path)
+    print output
     client_manager = ClientManager(cwd, judge=False)
 
     partov_server = PartovServer(client_manager, cwd, judge=False)
